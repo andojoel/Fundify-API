@@ -10,7 +10,7 @@ builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerSche
 builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
-builder.Services.AddIdentityApiEndpoints<User>()
+builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<DataContext>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,5 +29,7 @@ if (app.Environment.IsDevelopment())
 
 // Add your endpoints here
 appRoute.MapIdentityApi<User>();
+
+appRoute.MapGet("/hello", () => Results.Ok("Hello from the server !"));
 
 app.Run();
