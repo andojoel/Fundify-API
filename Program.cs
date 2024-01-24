@@ -3,6 +3,7 @@ using Fundify_API.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<DataContext>(options => options.UseMySQL(builder.C
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
-builder.Services.AddIdentityApiEndpoints<User>()
+builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<DataContext>()
     .AddApiEndpoints();
 
@@ -20,7 +21,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-var appRoute = app.MapGroup("api/v1");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -30,8 +30,9 @@ if (app.Environment.IsDevelopment())
 }
 
 // Add your endpoints here
-appRoute.MapIdentityApi<User>();
+app.MapIdentityApi<User>();
 
-appRoute.MapGet("/hello", () => Results.Ok("Hello from the server !"));
+app.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !"));
+app.MapGet("/hello", () => Results.Ok("Hello from the server !"));
 
 app.Run();
