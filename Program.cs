@@ -35,13 +35,6 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors(options =>
-{
-    options.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-});
-
 // Add your endpoints here
 appBaseRoute.MapIdentityApi<User>();
 
