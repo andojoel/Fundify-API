@@ -36,7 +36,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Add your endpoints here
-appBaseRoute.MapIdentityApi<User>();
+appBaseRoute.MapGroup("user").MapIdentityApi<User>();
 
 appBaseRoute.MapGet("/ping", (ClaimsPrincipal user) => Results.Ok($"Hello from the server !"));
 
