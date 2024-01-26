@@ -47,6 +47,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors();
+appBaseRoute.RequireCors();
 
 // Add your endpoints here
 appBaseRoute.MapGroup("user").MapIdentityApi<User>();
