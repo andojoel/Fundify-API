@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.AllowAnyOrigin()
+            policy.WithOrigins("http://www.fundify-paris.fr")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
@@ -32,6 +32,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseRouting();
 var appBaseRoute = app.MapGroup("/api/v1");
 
 // Configure the HTTP request pipeline.
