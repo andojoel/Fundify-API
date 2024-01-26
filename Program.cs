@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+// var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
+/*
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -19,6 +20,7 @@ builder.Services.AddCors(options =>
                               .AllowAnyHeader();
                       });
 });
+*/
 
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
@@ -45,10 +47,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-*/
 
 app.UseCors(MyAllowSpecificOrigins);
 appBaseRoute.RequireCors(MyAllowSpecificOrigins);
+*/
 
 app.UseSwagger();
 app.UseSwaggerUI();
