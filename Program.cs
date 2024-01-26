@@ -21,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var appBaseRoute = app.MapGroup("/api/v1");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -30,9 +31,9 @@ if (app.Environment.IsDevelopment())
 }
 
 // Add your endpoints here
-app.MapIdentityApi<User>();
+appBaseRoute.MapIdentityApi<User>();
 
-app.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !"));
-app.MapGet("/hello", () => Results.Ok("Hello from the server !"));
+appBaseRoute.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !"))
+    .RequireAuthorization();
 
 app.Run();
