@@ -33,9 +33,9 @@ if (app.Environment.IsDevelopment())
 // Add your endpoints here
 appBaseRoute.MapIdentityApi<User>();
 
-appBaseRoute.MapGet("/ping", (ClaimsPrincipal user) => Results.Ok($"Hello from the server !"));
+appBaseRoute.MapGet("/ping", (ClaimsPrincipal user) => Results.Ok($"Hello from the server !\n"));
 
-appBaseRoute.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !"))
+appBaseRoute.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !\n"))
     .RequireAuthorization();
 
 app.Run();
