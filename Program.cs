@@ -3,6 +3,8 @@ using Fundify_API.Data;
 using Fundify_API.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Security.Claims;
 
@@ -30,7 +32,16 @@ builder.Services.AddIdentityCore<User>()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
 builder.Services.AddCarter();
 
 var app = builder.Build();
@@ -43,6 +54,7 @@ if (app.Environment.IsDevelopment() || true)
     app.UseSwaggerUI();
 }
 
+app.UseAuthorization();
 app.UseCors();
 
 var appBaseRoute = app.MapGroup("/api/v1");
