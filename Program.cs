@@ -1,3 +1,4 @@
+using Carter;
 using Fundify_API.Data;
 using Fundify_API.DataModels;
 using Microsoft.AspNetCore.Identity;
@@ -19,12 +20,12 @@ builder.Services.AddCors(options =>
 });
 
 // Add services to the container.
-builder.Services.AddDbContext<DataContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddIdentityCore<User>()
-    .AddEntityFrameworkStores<DataContext>()
+    .AddEntityFrameworkStores<DatabaseContext>()
     .AddApiEndpoints();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,31 +34,26 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 app.UseRouting();
-var appBaseRoute = app.MapGroup("/api/v1");
 
 // Configure the HTTP request pipeline.
-/*
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-*/
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseCors();
+
+var appBaseRoute = app.MapGroup("/api/v1");
 appBaseRoute.RequireCors();
 
-// Add your endpoints here
-appBaseRoute.MapGroup("user").MapIdentityApi<User>();
+appBaseRoute.MapCarter();
 
-appBaseRoute.MapGet("/ping", (ClaimsPrincipal user) => Results.Ok($"Hello from the server !"));
+// Add your endpoints here
+//appBaseRoute.MapGroup("user").MapIdentityApi<User>();
 
 appBaseRoute.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !"))
     .RequireAuthorization();
-
 
 
 app.Run();
