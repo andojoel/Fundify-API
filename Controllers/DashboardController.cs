@@ -11,7 +11,7 @@ namespace Fundify_API.Controllers
         {
             var group = app.MapGroup("/dashboard").RequireAuthorization();
 
-            group.MapGet("", GetDashboard);
+            group.MapGet("/test", GetDashboard);
         }
 
         // GET: DashboardController/Details/5

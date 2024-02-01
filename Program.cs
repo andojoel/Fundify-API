@@ -50,5 +50,4 @@ appBaseRoute.RequireCors();
 
 appBaseRoute.MapCarter();
 
-
 app.Run();
