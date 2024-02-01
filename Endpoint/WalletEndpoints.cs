@@ -45,7 +45,7 @@ public class WalletEndpoints : ICarterModule
         {
             Wallet _wallet = new Wallet()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 Name = string.IsNullOrEmpty(name) ? "My Wallet" : name,
                 OwnerUsername = user.Identity!.Name
             };
