@@ -1,5 +1,6 @@
 ﻿using Carter;
 using Fundify_API.Data;
+using Fundify_API.DataModels;
 using System.Security.Claims;
 
 namespace Fundify_API.Controllers
@@ -11,7 +12,7 @@ namespace Fundify_API.Controllers
         {
             var group = app.MapGroup("/dashboard").RequireAuthorization();
 
-            group.MapGet("/test", GetDashboard);
+            group.MapGet("/", GetDashboard);
         }
 
         // GET: DashboardController/Details/5
@@ -20,8 +21,15 @@ namespace Fundify_API.Controllers
             ClaimsPrincipal user
             )
         {
+            var dashboard = new
+            {
+                username = user.Identity!.Name,
+                wallets = new List<Wallet>()
+            };
 
-            return Results.Ok($"Hello {user.Identity!.Name} !");
+            var requestDto = RequestDto.Success("Done", dashboard);
+
+            return Results.Ok(requestDto);
         }
     }
 }
