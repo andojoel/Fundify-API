@@ -1,5 +1,6 @@
 ﻿using Carter;
 using Fundify_API.Data;
+using System.Security.Claims;
 
 namespace Fundify_API.Controllers
 {
@@ -15,10 +16,12 @@ namespace Fundify_API.Controllers
 
         // GET: DashboardController/Details/5
         public static IResult GetDashboard(
-            DatabaseContext db
+            DatabaseContext db,
+            ClaimsPrincipal user
             )
         {
-            return TypedResults.Ok("Ok");
+
+            return Results.Ok($"Hello {user.Identity!.Name} !");
         }
     }
 }

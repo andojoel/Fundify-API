@@ -50,11 +50,5 @@ appBaseRoute.RequireCors();
 
 appBaseRoute.MapCarter();
 
-// Add your endpoints here
-//appBaseRoute.MapGroup("user").MapIdentityApi<User>();
-
-appBaseRoute.MapGet("/", (ClaimsPrincipal user) => Results.Ok($"Hello {user.Identity!.Name} !"))
-    .RequireAuthorization();
-
 
 app.Run();
